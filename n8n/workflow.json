@@ -1,0 +1,152 @@
+{
+  "name": "Lead-to-Sale Automation Engine",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-ingested",
+        "options": {}
+      },
+      "id": "c138f5f4-3d92-4d10-8b17-09d2a6a68f03",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=SELECT * FROM leads WHERE id = '{{ $json.id }}' AND pipeline_stage = 'new';"
+      },
+      "id": "e44d3221-ef74-4b56-ab99-2e119859fcd7",
+      "name": "Supabase Query Lead",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        300,
+        300
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "supabase-credentials-id",
+          "name": "Supabase Production Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "phoneNumber": "=+18005550199",
+        "message": "=Hi {{ $json.full_name }}, thanks for reaching out to Apex Climate & Solar. We received your request for {{ $json.service_type || 'our services' }} and will contact you shortly.",
+        "options": {}
+      },
+      "id": "d5f80b91-4cf1-4566-a36c-2f9547d2f954",
+      "name": "Twilio SMS to Lead",
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        500,
+        300
+      ],
+      "credentials": {
+        "twilioApi": {
+          "id": "twilio-credentials-id",
+          "name": "Twilio Active Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "phoneNumber": "=+18005550123",
+        "message": "=ALERT: New lead ingested!\nName: {{ $json.full_name }}\nPhone: {{ $json.phone }}\nService: {{ $json.service_type || 'Not specified' }}\nMonthly Bill: {{ $json.monthly_bill ? '$' + $json.monthly_bill : 'Not provided' }}\nVerify in Supabase dashboard.",
+        "options": {}
+      },
+      "id": "a9db7c32-b7e6-4ff6-993d-cf19c35f2d65",
+      "name": "Twilio SMS to Dispatcher",
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        700,
+        300
+      ],
+      "credentials": {
+        "twilioApi": {
+          "id": "twilio-credentials-id",
+          "name": "Twilio Active Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=BEGIN;\n  UPDATE leads \n  SET pipeline_stage = 'contacted', updated_at = now() \n  WHERE id = '{{ $json.id }}';\n\n  INSERT INTO pipeline_logs (lead_id, event_type, payload) \n  VALUES (\n    '{{ $json.id }}', \n    'stage_updated', \n    '{\"from\": \"new\", \"to\": \"contacted\", \"trigger\": \"n8n_flow\"}'::jsonb\n  );\nCOMMIT;"
+      },
+      "id": "f5de88be-9b34-45aa-bb08-8e6bf39c5658",
+      "name": "Supabase Update & Log",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        900,
+        300
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "supabase-credentials-id",
+          "name": "Supabase Production Connection"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Supabase Query Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Query Lead": {
+      "main": [
+        [
+          {
+            "node": "Twilio SMS to Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Twilio SMS to Lead": {
+      "main": [
+        [
+          {
+            "node": "Twilio SMS to Dispatcher",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Twilio SMS to Dispatcher": {
+      "main": [
+        [
+          {
+            "node": "Supabase Update & Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {},
+  "versionId": "f784e1b5-3bb4-4d8f-9a1b-0294715ef74f",
+  "id": "1"
+}

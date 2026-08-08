@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Climate & Solar - Savings Estimator</title>
+  <!-- Outfit and Inter Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Specific styles for the multi-step progressive form */
+    .wizard-body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+
+    .wizard-container {
+      background: rgba(18, 22, 35, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 40px;
+      width: 100%;
+      max-width: 680px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .wizard-header {
+      text-align: center;
+    }
+
+    .wizard-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #818cf8;
+      margin-bottom: 12px;
+    }
+
+    .wizard-logo span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #818cf8;
+      box-shadow: 0 0 10px rgba(129, 140, 248, 0.7);
+    }
+
+    .wizard-header h2 {
+      font-family: var(--font-title);
+      font-size: 24px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 40%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+
+    .wizard-header p {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* Progress Indicators */
+    .progress-bar-container {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--panel-border);
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--primary-gradient);
+      width: 25%;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 10px var(--primary-glow);
+    }
+
+    .step-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .step-label.active {
+      color: #818cf8;
+    }
+
+    /* Form step wrapper */
+    .form-step {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      animation: fadeInStep 0.4s ease forwards;
+    }
+
+    .form-step.active {
+      display: flex;
+    }
+
+    @keyframes fadeInStep {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Option click blocks */
+    .option-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .option-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .option-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .option-card.selected {
+      background: rgba(79, 70, 229, 0.15);
+      border-color: var(--primary);
+      box-shadow: 0 0 15px rgba(79, 70, 229, 0.2);
+    }
+
+    .option-card h4 {
+      font-family: var(--font-title);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .option-card p {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Custom file upload drop-zone */
+    .file-upload-zone {
+      border: 2px dashed var(--panel-border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.01);
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      position: relative;
+    }
+
+    .file-upload-zone:hover {
+      border-color: var(--primary);
+      background: rgba(79, 70, 229, 0.03);
+    }
+
+    .file-upload-zone input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .upload-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .upload-text {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .file-selected-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid var(--success);
+      color: var(--success);
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-top: 8px;
+    }
+
+    /* Navigation button container */
+    .wizard-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 20px;
+    }
+
+    .compliance-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .compliance-checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--panel-border);
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .compliance-checkbox-row input {
+      margin-top: 3px;
+    }
+  </style>
+</head>
+<body class="wizard-body">
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <div class="wizard-container">
+    <!-- Header -->
+    <div class="wizard-header">
+      <div class="wizard-logo">
+        <span></span> Apex Climate & Solar
+      </div>
+      <h2>Solar Savings Estimator</h2>
+      <p id="step-desc">Step 1: Property Qualification</p>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
+    <div class="step-labels">
+      <span class="step-label active" id="lbl-1">Qualify</span>
+      <span class="step-label" id="lbl-2">Financials</span>
+      <span class="step-label" id="lbl-3">Technical</span>
+      <span class="step-label" id="lbl-4">Submit</span>
+    </div>
+
+    <!-- Interactive Multistep Form -->
+    <form id="solar-wizard-form">
+      
+      <!-- STEP 1: INITIAL QUALIFIER -->
+      <div class="form-step active" id="step-1">
+        <div class="form-group">
+          <label>Property Type</label>
+          <div class="option-grid">
+            <div class="option-card selected" data-field="property_type" data-value="residential">
+              <div class="upload-icon">🏠</div>
+              <h4>Residential</h4>
+              <p>Home, Townhouse, Villa</p>
+            </div>
+            <div class="option-card" data-field="property_type" data-value="commercial">
+              <div class="upload-icon">🏢</div>
+              <h4>Commercial</h4>
+              <p>Office, Factory, B2B Site</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Homeownership Status</label>
+          <div class="option-grid">
+            <div class="option-card selected" data-field="ownership_status" data-value="own">
+              <div class="upload-icon">🔑</div>
+              <h4>I Own the Property</h4>
+              <p>Authorized to install solar</p>
+            </div>
+            <div class="option-card" data-field="ownership_status" data-value="rent">
+              <div class="upload-icon">📄</div>
+              <h4>I am Renting</h4>
+              <p>Needs landlord approval</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: CONSUMPTION & FINANCIALS -->
+      <div class="form-step" id="step-2">
+        <div class="form-row">
+          <div class="form-group" style="grid-column: span 2;">
+            <label for="currency-selector">Select Your Local Currency</label>
+            <select id="currency-selector" style="width: 100%;">
+              <option value="PHP" selected>Philippine Peso (₱)</option>
+              <option value="USD">US Dollar ($)</option>
+              <option value="EUR">Euro (€)</option>
+              <option value="GBP">British Pound (£)</option>
+              <option value="AUD">Australian Dollar ($)</option>
+              <option value="CAD">Canadian Dollar ($)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label id="bill-label">Average Monthly Electric Bill (₱)</label>
+          <div class="option-grid" id="bill-range-grid">
+            <!-- Dynamic ranges will populate here in JS -->
+          </div>
+        </div>
+
+        <!-- Document Upload Grid -->
+        <div class="form-group">
+          <label>Upload Documents for Immediate Design Assessment (Optional)</label>
+          <div class="form-row" style="margin-top: 6px;">
+            
+            <!-- Utility Bill -->
+            <div class="file-upload-zone">
+              <input type="file" id="doc-bill" accept="image/*,application/pdf">
+              <div class="upload-icon">🧾</div>
+              <div class="upload-text">Electricity Bill</div>
+              <div class="upload-text" style="font-size: 10px;">Meralco or local utility</div>
+              <div class="file-selected-badge" style="display: none;" id="badge-doc-bill">Selected</div>
+            </div>
+
+            <!-- Main Breaker -->
+            <div class="file-upload-zone">
+              <input type="file" id="doc-breaker" accept="image/*">
+              <div class="upload-icon">⚡</div>
+              <div class="upload-text">Main Breaker Photo</div>
+              <div class="upload-text" style="font-size: 10px;">Electrical panel box</div>
+              <div class="file-selected-badge" style="display: none;" id="badge-doc-breaker">Selected</div>
+            </div>
+
+            <!-- House/Roof -->
+            <div class="file-upload-zone">
+              <input type="file" id="doc-roof" accept="image/*">
+              <div class="upload-icon">📸</div>
+              <div class="upload-text">House & Roof Photo</div>
+              <div class="upload-text" style="font-size: 10px;">Structure overview</div>
+              <div class="file-selected-badge" style="display: none;" id="badge-doc-roof">Selected</div>
+            </div>
+          </div>
+
+          <div class="form-row" style="margin-top: 12px;">
+            <!-- Land Title -->
+            <div class="file-upload-zone">
+              <input type="file" id="doc-title" accept="image/*,application/pdf">
+              <div class="upload-icon">📜</div>
+              <div class="upload-text">Proof of Ownership</div>
+              <div class="upload-text" style="font-size: 10px;">Land Title / Tax Receipt</div>
+              <div class="file-selected-badge" style="display: none;" id="badge-doc-title">Selected</div>
+            </div>
+
+            <!-- Local Clearance -->
+            <div class="file-upload-zone">
+              <input type="file" id="doc-clearance" accept="image/*,application/pdf">
+              <div class="upload-icon">🏢</div>
+              <div class="upload-text">Govt Permits (Barangay)</div>
+              <div class="upload-text" style="font-size: 10px;">Occupancy permit if any</div>
+              <div class="file-selected-badge" style="display: none;" id="badge-doc-clearance">Selected</div>
+            </div>
+
+            <!-- Valid IDs -->
+            <div class="file-upload-zone">
+              <input type="file" id="doc-id" accept="image/*,application/pdf">
+              <div class="upload-icon">🪪</div>
+              <div class="upload-text">Valid IDs (2 copies)</div>
+              <div class="upload-text" style="font-size: 10px;">Government-issued ID</div>
+              <div class="file-selected-badge" style="display: none;" id="badge-doc-id">Selected</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: TECHNICAL DETAILS -->
+      <div class="form-step" id="step-3">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="country-select">Country *</label>
+            <select id="country-select" style="width: 100%; border-radius: 6px; padding: 10px; border: 1px solid var(--panel-border); background: #111422; color: #fff;">
+              <option value="PH" selected>Philippines 🇵🇭</option>
+              <option value="US">United States 🇺🇸</option>
+              <option value="GB">United Kingdom 🇬🇧</option>
+              <option value="AU">Australia 🇦🇺</option>
+              <option value="CA">Canada 🇨🇦</option>
+              <option value="DE">Germany 🇩🇪</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="state-input">State / Region / Province *</label>
+            <input type="text" id="state-input" required placeholder="e.g. Metro Manila or California">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city-input">City / Municipality *</label>
+            <input type="text" id="city-input" required placeholder="e.g. Pasig City or Los Angeles">
+          </div>
+          <div class="form-group">
+            <label for="utility-input">Utility Provider *</label>
+            <input type="text" id="utility-input" required placeholder="e.g. Meralco or PG&E">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="street-input">Street Address & Zip Code *</label>
+          <input type="text" id="street-input" required placeholder="e.g. 123 Emerald Ave, 1605">
+        </div>
+
+        <div class="form-group">
+          <label>Roof Construction Material</label>
+          <div class="option-grid">
+            <div class="option-card selected" data-field="roof_type" data-value="metal">
+              <div class="upload-icon">⚙️</div>
+              <h4>Metal (GI Sheet)</h4>
+              <p>Corrugated roofing sheets</p>
+            </div>
+            <div class="option-card" data-field="roof_type" data-value="concrete">
+              <div class="upload-icon">🧱</div>
+              <h4>Concrete Slab</h4>
+              <p>Flat cement decking</p>
+            </div>
+            <div class="option-card" data-field="roof_type" data-value="clay">
+              <div class="upload-icon">🏺</div>
+              <h4>Clay Tiles</h4>
+              <p>Spanish or ceramic tiles</p>
+            </div>
+            <div class="option-card" data-field="roof_type" data-value="other">
+              <div class="upload-icon">🛠️</div>
+              <h4>Other Material</h4>
+              <p>Composite shingles, etc.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Primary Installation Motivation</label>
+          <div class="option-grid">
+            <div class="option-card selected" data-field="primary_goal" data-value="lower_bills">
+              <div class="upload-icon">📉</div>
+              <h4>Lower Bill Cost</h4>
+              <p>Maximize offset savings</p>
+            </div>
+            <div class="option-card" data-field="primary_goal" data-value="backup_typhoons">
+              <div class="upload-icon">🌀</div>
+              <h4>Backup Power</h4>
+              <p>Hybrid storage for typhoons</p>
+            </div>
+            <div class="option-card" style="grid-column: span 2;" data-field="primary_goal" data-value="both">
+              <div class="upload-icon">💡</div>
+              <h4>Both Goals</h4>
+              <p>Complete savings and full grid resiliency</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4: CONTACT & COMPLIANCE -->
+      <div class="form-step" id="step-4">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name *</label>
+            <input type="text" id="firstName" required placeholder="John">
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name *</label>
+            <input type="text" id="lastName" required placeholder="Doe">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="contactEmail">Email Address *</label>
+          <input type="email" id="contactEmail" required placeholder="john.doe@example.com">
+        </div>
+
+        <div class="form-group">
+          <label for="contactPhone">Phone Number *</label>
+          <input type="tel" id="contactPhone" required placeholder="e.g. 0917 123 4567 or +1 (555) 019-9234">
+        </div>
+
+        <!-- Compliance Box -->
+        <div class="compliance-checkbox-row">
+          <input type="checkbox" id="sms-consent" required>
+          <label for="sms-consent" class="compliance-text">
+            By submitting, I agree to receive appointment reminders, SMS updates, and promotional offers from Apex Climate & Solar at the number provided. Consent is not a condition of purchase. Message/data rates apply. Reply STOP to opt-out.
+          </label>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="wizard-actions">
+        <button type="button" class="btn btn-secondary" id="prev-btn" style="visibility: hidden;">Previous</button>
+        <button type="button" class="btn btn-primary" id="next-btn">Next Step</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // State management for wizard
+    let currentStep = 1;
+    const totalSteps = 4;
+    
+    // User selections
+    const formData = {
+      property_type: 'residential',
+      ownership_status: 'own',
+      currency: 'PHP',
+      monthly_bill: 7500, // midpoint of default selected
+      roof_type: 'metal',
+      primary_goal: 'lower_bills',
+      attachments: {}
+    };
+
+    // DOM References
+    const stepDescEl = document.getElementById('step-desc');
+    const progressFillEl = document.getElementById('progress-fill');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const currencySelector = document.getElementById('currency-selector');
+    const billLabel = document.getElementById('bill-label');
+    const billGrid = document.getElementById('bill-range-grid');
+
+    // Step labels
+    const lbls = [
+      document.getElementById('lbl-1'),
+      document.getElementById('lbl-2'),
+      document.getElementById('lbl-3'),
+      document.getElementById('lbl-4')
+    ];
+
+    // Currency configuration ranges
+    const CURRENCY_CONFIGS = {
+      PHP: {
+        symbol: '₱',
+        ranges: [
+          { text: 'Under ₱5,000', val: 3000 },
+          { text: '₱5,000–₱10,000', val: 7500, default: true },
+          { text: '₱10,001–₱15,000', val: 12500 },
+          { text: '₱15,000+', val: 20000 }
+        ]
+      },
+      USD: {
+        symbol: '$',
+        ranges: [
+          { text: 'Under $100', val: 80 },
+          { text: '$100–$250', val: 180, default: true },
+          { text: '$251–$400', val: 320 },
+          { text: '$400+', val: 500 }
+        ]
+      },
+      EUR: {
+        symbol: '€',
+        ranges: [
+          { text: 'Under €80', val: 60 },
+          { text: '€80–€200', val: 140, default: true },
+          { text: '€201–$350', val: 280 },
+          { text: '€350+', val: 450 }
+        ]
+      },
+      GBP: {
+        symbol: '£',
+        ranges: [
+          { text: 'Under £60', val: 50 },
+          { text: '£60–£180', val: 120, default: true },
+          { text: '£181–£300', val: 240 },
+          { text: '£300+', val: 400 }
+        ]
+      },
+      AUD: {
+        symbol: '$',
+        ranges: [
+          { text: 'Under $150', val: 100 },
+          { text: '$150–$300', val: 220, default: true },
+          { text: '$301–$500', val: 400 },
+          { text: '$500+', val: 650 }
+        ]
+      },
+      CAD: {
+        symbol: '$',
+        ranges: [
+          { text: 'Under $120', val: 90 },
+          { text: '$120–$280', val: 200, default: true },
+          { text: '$281–$450', val: 365 },
+          { text: '$450+', val: 600 }
+        ]
+      }
+    };
+
+    // Initialize currency ranges
+    updateCurrencyRanges();
+
+    // Change currency handler
+    currencySelector.addEventListener('change', (e) => {
+      formData.currency = e.target.value;
+      updateCurrencyRanges();
+    });
+
+    function updateCurrencyRanges() {
+      const config = CURRENCY_CONFIGS[formData.currency];
+      billLabel.textContent = `Average Monthly Electric Bill (${config.symbol})`;
+      billGrid.innerHTML = '';
+
+      config.ranges.forEach((r, idx) => {
+        const option = document.createElement('div');
+        option.className = `option-card ${r.default ? 'selected' : ''}`;
+        option.innerHTML = `
+          <div style="font-size: 18px; margin-bottom: 4px;">📈</div>
+          <h4>${r.text}</h4>
+        `;
+        
+        if (r.default) {
+          formData.monthly_bill = r.val;
+        }
+
+        option.addEventListener('click', () => {
+          billGrid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+          option.classList.add('selected');
+          formData.monthly_bill = r.val;
+        });
+
+        billGrid.appendChild(option);
+      });
+    }
+
+    // Handle Option Card selection (Radio button simulation)
+    document.querySelectorAll('.option-card').forEach(card => {
+      const field = card.getAttribute('data-field');
+      if (!field) return; // Skip currency/bills options which are handled separately
+
+      card.addEventListener('click', () => {
+        // Remove selection from siblings in the same field
+        document.querySelectorAll(`.option-card[data-field="${field}"]`).forEach(sibling => {
+          sibling.classList.remove('selected');
+        });
+        card.classList.add('selected');
+        formData[field] = card.getAttribute('data-value');
+      });
+    });
+
+    // Handle file uploads dynamically (storing metadata in the array)
+    const fileInputs = ['doc-bill', 'doc-breaker', 'doc-roof', 'doc-title', 'doc-clearance', 'doc-id'];
+    fileInputs.forEach(inputId => {
+      const input = document.getElementById(inputId);
+      const badge = document.getElementById(`badge-${inputId}`);
+
+      input.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+          const file = e.target.files[0];
+          formData.attachments[inputId.replace('doc-', '')] = {
+            name: file.name,
+            size: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
+            type: file.type || 'unknown'
+          };
+          badge.textContent = 'Uploaded';
+          badge.style.display = 'inline-flex';
+        } else {
+          delete formData.attachments[inputId.replace('doc-', '')];
+          badge.style.display = 'none';
+        }
+      });
+    });
+
+    // Location presets
+    const locationPresets = {
+      PH: { state: 'Metro Manila', city: 'Pasig City', utility: 'Meralco' },
+      US: { state: 'California', city: 'Los Angeles', utility: 'PG&E' },
+      GB: { state: 'England', city: 'London', utility: 'British Gas' },
+      AU: { state: 'New South Wales', city: 'Sydney', utility: 'Origin Energy' },
+      CA: { state: 'Ontario', city: 'Toronto', utility: 'Hydro One' },
+      DE: { state: 'Bavaria', city: 'Munich', utility: 'E.ON' }
+    };
+
+    const countrySelect = document.getElementById('country-select');
+    const stateInput = document.getElementById('state-input');
+    const cityInput = document.getElementById('city-input');
+    const utilityInput = document.getElementById('utility-input');
+    const streetInput = document.getElementById('street-input');
+
+    // Default values on load
+    if (countrySelect) {
+      applyLocationPresets(countrySelect.value);
+      countrySelect.addEventListener('change', (e) => applyLocationPresets(e.target.value));
+    }
+
+    function applyLocationPresets(code) {
+      const preset = locationPresets[code];
+      if (preset) {
+        stateInput.value = preset.state;
+        cityInput.value = preset.city;
+        utilityInput.value = preset.utility;
+      }
+    }
+
+    // Navigation triggers
+    prevBtn.addEventListener('click', () => {
+      if (currentStep > 1) {
+        goToStep(currentStep - 1);
+      }
+    });
+
+    nextBtn.addEventListener('click', async () => {
+      // Validation check before moving forward
+      if (currentStep === 3) {
+        const state = stateInput.value.trim();
+        const city = cityInput.value.trim();
+        const utility = utilityInput.value.trim();
+        const street = streetInput.value.trim();
+        if (!state || !city || !utility || !street) {
+          alert('Please fill out all required location and utility fields.');
+          return;
+        }
+      }
+
+      if (currentStep < totalSteps) {
+        goToStep(currentStep + 1);
+      } else {
+        // Last step: Validate and Submit
+        const firstName = document.getElementById('firstName').value.trim();
+        const lastName = document.getElementById('lastName').value.trim();
+        const email = document.getElementById('contactEmail').value.trim();
+        const phone = document.getElementById('contactPhone').value.trim();
+        const smsConsent = document.getElementById('sms-consent').checked;
+
+        if (!firstName || !lastName || !email || !phone) {
+          alert('Please fill out all required contact fields.');
+          return;
+        }
+
+        if (!smsConsent) {
+          alert('Please check the SMS Consent box to proceed.');
+          return;
+        }
+
+        await submitLead({ firstName, lastName, email, phone });
+      }
+    });
+
+    function goToStep(step) {
+      // Toggle visibility
+      document.querySelectorAll('.form-step').forEach(stepDiv => {
+        stepDiv.classList.remove('active');
+      });
+      document.getElementById(`step-${step}`).classList.add('active');
+
+      // Update progress fill
+      currentStep = step;
+      progressFillEl.style.width = `${(currentStep / totalSteps) * 100}%`;
+
+      // Update Step indicators
+      lbls.forEach((lbl, idx) => {
+        if (idx < currentStep) {
+          lbl.classList.add('active');
+        } else {
+          lbl.classList.remove('active');
+        }
+      });
+
+      // Update title text
+      switch (step) {
+        case 1:
+          stepDescEl.textContent = 'Step 1: Property Qualification';
+          prevBtn.style.visibility = 'hidden';
+          nextBtn.textContent = 'Next Step';
+          break;
+        case 2:
+          stepDescEl.textContent = 'Step 2: Consumption & Financials';
+          prevBtn.style.visibility = 'visible';
+          nextBtn.textContent = 'Next Step';
+          break;
+        case 3:
+          stepDescEl.textContent = 'Step 3: Technical Roof Details';
+          prevBtn.style.visibility = 'visible';
+          nextBtn.textContent = 'Next Step';
+          break;
+        case 4:
+          stepDescEl.textContent = 'Step 4: Contact & Consent';
+          prevBtn.style.visibility = 'visible';
+          nextBtn.textContent = 'Request Custom Estimate';
+          break;
+      }
+    }
+
+    // Submit Lead function
+    async function submitLead(contactDetails) {
+      nextBtn.disabled = true;
+      nextBtn.textContent = 'Processing...';
+
+      const payload = {
+        full_name: `${contactDetails.firstName} ${contactDetails.lastName}`,
+        phone: contactDetails.phone,
+        email: contactDetails.email,
+        service_type: formData.property_type === 'commercial' ? 'commercial_solar' : 'solar',
+        monthly_bill: formData.monthly_bill,
+        metadata: {
+          currency: formData.currency,
+          property_type: formData.property_type,
+          ownership_status: formData.ownership_status,
+          roof_type: formData.roof_type,
+          primary_goal: formData.primary_goal,
+          country: countrySelect.value,
+          state_region: stateInput.value.trim(),
+          city_municipality: cityInput.value.trim(),
+          utility_provider: utilityInput.value.trim(),
+          street_address: streetInput.value.trim(),
+          property_address: `${streetInput.value.trim()}, ${cityInput.value.trim()}, ${stateInput.value.trim()}, ${countrySelect.value}`,
+          attachments: formData.attachments,
+          source: 'landing_page_estimator',
+          submitted_at: new Date().toISOString()
+        }
+      };
+
+      try {
+        const response = await fetch('/api/v1/leads/ingest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+        if (response.ok && result.success) {
+          window.location.href = '/success.html';
+        } else {
+          alert(`Submission error: ${result.error || 'Validation failed'}`);
+          nextBtn.disabled = false;
+          nextBtn.textContent = 'Request Custom Estimate';
+        }
+      } catch (err) {
+        console.error('Request failed:', err);
+        alert('Failed to establish contact with lead database.');
+        nextBtn.disabled = false;
+        nextBtn.textContent = 'Request Custom Estimate';
+      }
+    }
+  </script>
+</body>
+</html>

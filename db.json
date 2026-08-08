@@ -1,0 +1,419 @@
+{
+  "leads": [
+    {
+      "id": "lead-s1",
+      "created_at": "2026-08-08T14:17:39.717Z",
+      "updated_at": "2026-08-08T14:17:39.717Z",
+      "full_name": "Alexander Wright",
+      "phone": "+639171234567",
+      "email": "alex.wright@gmail.com",
+      "service_type": "solar",
+      "monthly_bill": 12500,
+      "pipeline_stage": "estimate_scheduled",
+      "metadata": {
+        "currency": "PHP",
+        "property_type": "residential",
+        "ownership_status": "own",
+        "roof_type": "metal",
+        "primary_goal": "lower_bills",
+        "country": "PH",
+        "state_region": "Metro Manila",
+        "city_municipality": "Pasig City",
+        "street_address": "12 Emerald Ave",
+        "utility_provider": "Meralco",
+        "source": "portal_manual_estimator"
+      }
+    },
+    {
+      "id": "lead-s2",
+      "created_at": "2026-08-08T14:17:39.717Z",
+      "updated_at": "2026-08-08T14:17:39.717Z",
+      "full_name": "Maria Santos",
+      "phone": "+639189876543",
+      "email": "maria.santos@yahoo.com",
+      "service_type": "solar",
+      "monthly_bill": 6200,
+      "pipeline_stage": "contacted",
+      "metadata": {
+        "currency": "PHP",
+        "property_type": "residential",
+        "ownership_status": "own",
+        "roof_type": "concrete",
+        "primary_goal": "backup_typhoons",
+        "country": "PH",
+        "state_region": "Cebu",
+        "city_municipality": "Cebu City",
+        "street_address": "45 Mango Ave",
+        "utility_provider": "VECO",
+        "source": "portal_manual_estimator"
+      }
+    },
+    {
+      "id": "lead-s3",
+      "created_at": "2026-08-08T14:17:39.717Z",
+      "updated_at": "2026-08-08T14:17:39.717Z",
+      "full_name": "Apex B2B Warehouse",
+      "phone": "+15550192834",
+      "email": "ops@apexwarehouse.com",
+      "service_type": "commercial_solar",
+      "monthly_bill": 85000,
+      "pipeline_stage": "new",
+      "metadata": {
+        "currency": "USD",
+        "property_type": "commercial",
+        "ownership_status": "own",
+        "roof_type": "metal",
+        "primary_goal": "both",
+        "country": "US",
+        "state_region": "California",
+        "city_municipality": "Los Angeles",
+        "street_address": "900 Airport Blvd",
+        "utility_provider": "PG&E",
+        "source": "portal_manual_estimator"
+      }
+    },
+    {
+      "id": "32a40822-8502-44b0-8e6a-ebd693f3a286",
+      "created_at": "2026-08-08T14:17:44.400Z",
+      "updated_at": "2026-08-08T14:17:44.400Z",
+      "full_name": "John Doe",
+      "phone": "+15550199234",
+      "email": "john.doe@example.com",
+      "service_type": "solar",
+      "monthly_bill": 180.5,
+      "pipeline_stage": "new",
+      "metadata": {
+        "source": "facebook_ad_campaign"
+      }
+    },
+    {
+      "id": "d79d902b-1eef-44b4-b92f-b65768b28c4b",
+      "created_at": "2026-08-08T14:17:44.468Z",
+      "updated_at": "2026-08-08T14:17:44.468Z",
+      "full_name": "Jane Smith",
+      "phone": "+15550199876",
+      "email": "jane.smith@example.com",
+      "service_type": "hvac_repair",
+      "monthly_bill": 85,
+      "pipeline_stage": "new",
+      "metadata": {
+        "campaign_id": "summer_promo_2026"
+      }
+    }
+  ],
+  "logs": [
+    {
+      "id": "d39e7dc6-aa96-4cb4-ba1e-b205fa5b4277",
+      "created_at": "2026-08-08T14:17:39.718Z",
+      "lead_id": "lead-s1",
+      "event_type": "lead_created",
+      "payload": {
+        "lead": {
+          "id": "lead-s1",
+          "created_at": "2026-08-08T14:17:39.717Z",
+          "updated_at": "2026-08-08T14:17:39.717Z",
+          "full_name": "Alexander Wright",
+          "phone": "+639171234567",
+          "email": "alex.wright@gmail.com",
+          "service_type": "solar",
+          "monthly_bill": 12500,
+          "pipeline_stage": "estimate_scheduled",
+          "metadata": {
+            "currency": "PHP",
+            "property_type": "residential",
+            "ownership_status": "own",
+            "roof_type": "metal",
+            "primary_goal": "lower_bills",
+            "country": "PH",
+            "state_region": "Metro Manila",
+            "city_municipality": "Pasig City",
+            "street_address": "12 Emerald Ave",
+            "utility_provider": "Meralco",
+            "source": "portal_manual_estimator"
+          }
+        }
+      }
+    },
+    {
+      "id": "e0406872-182d-4cea-9335-b95fa6faf643",
+      "created_at": "2026-08-08T14:17:39.718Z",
+      "lead_id": "lead-s2",
+      "event_type": "lead_created",
+      "payload": {
+        "lead": {
+          "id": "lead-s2",
+          "created_at": "2026-08-08T14:17:39.717Z",
+          "updated_at": "2026-08-08T14:17:39.717Z",
+          "full_name": "Maria Santos",
+          "phone": "+639189876543",
+          "email": "maria.santos@yahoo.com",
+          "service_type": "solar",
+          "monthly_bill": 6200,
+          "pipeline_stage": "contacted",
+          "metadata": {
+            "currency": "PHP",
+            "property_type": "residential",
+            "ownership_status": "own",
+            "roof_type": "concrete",
+            "primary_goal": "backup_typhoons",
+            "country": "PH",
+            "state_region": "Cebu",
+            "city_municipality": "Cebu City",
+            "street_address": "45 Mango Ave",
+            "utility_provider": "VECO",
+            "source": "portal_manual_estimator"
+          }
+        }
+      }
+    },
+    {
+      "id": "5810a8b2-7e13-403c-b35c-b961c915916b",
+      "created_at": "2026-08-08T14:17:39.718Z",
+      "lead_id": "lead-s3",
+      "event_type": "lead_created",
+      "payload": {
+        "lead": {
+          "id": "lead-s3",
+          "created_at": "2026-08-08T14:17:39.717Z",
+          "updated_at": "2026-08-08T14:17:39.717Z",
+          "full_name": "Apex B2B Warehouse",
+          "phone": "+15550192834",
+          "email": "ops@apexwarehouse.com",
+          "service_type": "commercial_solar",
+          "monthly_bill": 85000,
+          "pipeline_stage": "new",
+          "metadata": {
+            "currency": "USD",
+            "property_type": "commercial",
+            "ownership_status": "own",
+            "roof_type": "metal",
+            "primary_goal": "both",
+            "country": "US",
+            "state_region": "California",
+            "city_municipality": "Los Angeles",
+            "street_address": "900 Airport Blvd",
+            "utility_provider": "PG&E",
+            "source": "portal_manual_estimator"
+          }
+        }
+      }
+    },
+    {
+      "id": "2b8ef67b-edc4-4499-970b-2ebcb3078613",
+      "created_at": "2026-08-08T14:17:44.400Z",
+      "lead_id": "32a40822-8502-44b0-8e6a-ebd693f3a286",
+      "event_type": "lead_created",
+      "payload": {
+        "lead": {
+          "id": "32a40822-8502-44b0-8e6a-ebd693f3a286",
+          "created_at": "2026-08-08T14:17:44.400Z",
+          "updated_at": "2026-08-08T14:17:44.400Z",
+          "full_name": "John Doe",
+          "phone": "+15550199234",
+          "email": "john.doe@example.com",
+          "service_type": "solar",
+          "monthly_bill": 180.5,
+          "pipeline_stage": "new",
+          "metadata": {
+            "source": "facebook_ad_campaign"
+          }
+        }
+      }
+    },
+    {
+      "id": "da1a9ef0-617d-45e1-ab8f-c99fc53bc954",
+      "created_at": "2026-08-08T14:17:44.401Z",
+      "lead_id": "32a40822-8502-44b0-8e6a-ebd693f3a286",
+      "event_type": "sms_sent",
+      "payload": {
+        "to": "+15550199234",
+        "message": "Hi John Doe, thanks for reaching out to Apex Climate & Solar. We received your request for solar and will contact you shortly.",
+        "type": "customer_autoresponder"
+      }
+    },
+    {
+      "id": "de5fbb3c-92df-4416-82d4-daaec92553d4",
+      "created_at": "2026-08-08T14:17:44.401Z",
+      "lead_id": "32a40822-8502-44b0-8e6a-ebd693f3a286",
+      "event_type": "sms_sent",
+      "payload": {
+        "to": "+18005550123",
+        "message": "ALERT: New Lead Received!\nName: John Doe\nPhone: +15550199234\nService: solar\nBill: $180.5",
+        "type": "internal_notification"
+      }
+    },
+    {
+      "id": "365951d7-1fa6-4f51-916c-528676a85223",
+      "created_at": "2026-08-08T14:17:44.468Z",
+      "lead_id": "d79d902b-1eef-44b4-b92f-b65768b28c4b",
+      "event_type": "lead_created",
+      "payload": {
+        "lead": {
+          "id": "d79d902b-1eef-44b4-b92f-b65768b28c4b",
+          "created_at": "2026-08-08T14:17:44.468Z",
+          "updated_at": "2026-08-08T14:17:44.468Z",
+          "full_name": "Jane Smith",
+          "phone": "+15550199876",
+          "email": "jane.smith@example.com",
+          "service_type": "hvac_repair",
+          "monthly_bill": 85,
+          "pipeline_stage": "new",
+          "metadata": {
+            "campaign_id": "summer_promo_2026"
+          }
+        }
+      }
+    },
+    {
+      "id": "b9b66bd4-1dd6-4f1f-b7f3-f83e83964ecd",
+      "created_at": "2026-08-08T14:17:44.468Z",
+      "lead_id": "d79d902b-1eef-44b4-b92f-b65768b28c4b",
+      "event_type": "sms_sent",
+      "payload": {
+        "to": "+15550199876",
+        "message": "Hi Jane Smith, thanks for reaching out to Apex Climate & Solar. We received your request for hvac_repair and will contact you shortly.",
+        "type": "customer_autoresponder"
+      }
+    },
+    {
+      "id": "a9111b6b-92aa-4378-926f-13caa894475f",
+      "created_at": "2026-08-08T14:17:44.468Z",
+      "lead_id": "d79d902b-1eef-44b4-b92f-b65768b28c4b",
+      "event_type": "sms_sent",
+      "payload": {
+        "to": "+18005550123",
+        "message": "ALERT: New Lead Received!\nName: Jane Smith\nPhone: +15550199876\nService: hvac_repair\nBill: $85",
+        "type": "internal_notification"
+      }
+    }
+  ],
+  "sms": [
+    {
+      "id": "05388028-171d-4849-a8a1-2fe63aea7db2",
+      "created_at": "2026-08-08T14:17:44.401Z",
+      "to": "+15550199234",
+      "message": "Hi John Doe, thanks for reaching out to Apex Climate & Solar. We received your request for solar and will contact you shortly.",
+      "type": "customer_autoresponder"
+    },
+    {
+      "id": "7ff7f59e-5ae8-4299-9bd7-6ff3c3364c42",
+      "created_at": "2026-08-08T14:17:44.401Z",
+      "to": "+18005550123",
+      "message": "ALERT: New Lead Received!\nName: John Doe\nPhone: +15550199234\nService: solar\nBill: $180.5",
+      "type": "internal_notification"
+    },
+    {
+      "id": "3ab503fb-a453-4b98-b0b2-90d67f2ffd7f",
+      "created_at": "2026-08-08T14:17:44.468Z",
+      "to": "+15550199876",
+      "message": "Hi Jane Smith, thanks for reaching out to Apex Climate & Solar. We received your request for hvac_repair and will contact you shortly.",
+      "type": "customer_autoresponder"
+    },
+    {
+      "id": "31375b79-d52b-40f6-aacc-9cc8b99349e9",
+      "created_at": "2026-08-08T14:17:44.468Z",
+      "to": "+18005550123",
+      "message": "ALERT: New Lead Received!\nName: Jane Smith\nPhone: +15550199876\nService: hvac_repair\nBill: $85",
+      "type": "internal_notification"
+    }
+  ],
+  "fulfillment": [],
+  "inventory": [
+    {
+      "id": "inv-1",
+      "sku": "APX-PAN-550M",
+      "name": "Apex Mono 550W Solar Panel",
+      "category": "Panels",
+      "quantity": 120,
+      "unit_cost": 8500,
+      "currency": "PHP",
+      "specs": "Monocrystalline, 21.3% Efficiency, IP68 Junction Box",
+      "warehouse_country": "PH",
+      "created_at": "2026-08-08T14:17:39.716Z"
+    },
+    {
+      "id": "inv-2",
+      "sku": "APX-PAN-400M",
+      "name": "Apex Compact 400W Panel",
+      "category": "Panels",
+      "quantity": 85,
+      "unit_cost": 6200,
+      "currency": "PHP",
+      "specs": "Residential sleek black layout, 120 Half-cells",
+      "warehouse_country": "PH",
+      "created_at": "2026-08-08T14:17:39.717Z"
+    },
+    {
+      "id": "inv-3",
+      "sku": "APX-INV-05HY",
+      "name": "Apex Hybrid Inverter 5kW",
+      "category": "Inverters",
+      "quantity": 15,
+      "unit_cost": 48000,
+      "currency": "PHP",
+      "specs": "Single Phase, Dual MPPT, Battery Ready, Wifi module",
+      "warehouse_country": "PH",
+      "created_at": "2026-08-08T14:17:39.717Z"
+    },
+    {
+      "id": "inv-4",
+      "sku": "APX-INV-10HY",
+      "name": "Apex Hybrid Inverter 10kW",
+      "category": "Inverters",
+      "quantity": 8,
+      "unit_cost": 72000,
+      "currency": "PHP",
+      "specs": "Three Phase, Triple MPPT, Parallel Stackable",
+      "warehouse_country": "CN",
+      "created_at": "2026-08-08T14:17:39.717Z"
+    },
+    {
+      "id": "inv-5",
+      "sku": "APX-BAT-LFP05",
+      "name": "Apex LFP Battery Unit 5.12kWh",
+      "category": "Batteries",
+      "quantity": 24,
+      "unit_cost": 85000,
+      "currency": "PHP",
+      "specs": "LiFePO4, 6000+ Cycles, Wall-mount stackable",
+      "warehouse_country": "PH",
+      "created_at": "2026-08-08T14:17:39.717Z"
+    },
+    {
+      "id": "inv-6",
+      "sku": "APX-BAT-LFP10",
+      "name": "Apex LFP Battery Unit 10.24kWh",
+      "category": "Batteries",
+      "quantity": 0,
+      "unit_cost": 148000,
+      "currency": "PHP",
+      "specs": "LiFePO4, high-discharge smart BMS, LCD Display",
+      "warehouse_country": "PH",
+      "created_at": "2026-08-08T14:17:39.717Z"
+    },
+    {
+      "id": "inv-6-cn",
+      "sku": "APX-BAT-LFP10-CN",
+      "name": "Apex LFP Battery Unit 10.24kWh (CN)",
+      "category": "Batteries",
+      "quantity": 15,
+      "unit_cost": 130000,
+      "currency": "PHP",
+      "specs": "LiFePO4, high-discharge smart BMS, partner facility",
+      "warehouse_country": "CN",
+      "created_at": "2026-08-08T14:17:39.717Z"
+    },
+    {
+      "id": "inv-7",
+      "sku": "APX-MNT-TIN",
+      "name": "Apex Tin Roof Mount Kit",
+      "category": "Mounting",
+      "quantity": 200,
+      "unit_cost": 1800,
+      "currency": "PHP",
+      "specs": "Al6005-T5 Aluminum rails, SUS304 bolts",
+      "warehouse_country": "PH",
+      "created_at": "2026-08-08T14:17:39.717Z"
+    }
+  ]
+}
