@@ -2361,11 +2361,17 @@ function renderMapMarkers() {
       'bacolod': [10.6667, 122.9500],
       'taguig': [14.5176, 121.0509],
       'antipolo': [14.5845, 121.1754],
+      'luzon': [16.0000, 121.0000],
+      'visayas': [11.0000, 123.0000],
+      'mindanao': [8.0000, 125.0000],
       // US
       'chicago': [41.8781, -87.6298],
       'new york': [40.7128, -74.0060],
       'san francisco': [37.7749, -122.4194],
       'houston': [29.7604, -95.3698],
+      'california': [36.7783, -119.4179],
+      'texas': [31.9686, -99.9018],
+      'florida': [27.6648, -81.5158],
       // UK
       'london': [51.5074, -0.1278],
       // Germany
@@ -2400,8 +2406,13 @@ function renderMapMarkers() {
       let coords = [12.8797, 121.7740]; // Default PH coordinates
       if (meta.latitude && meta.longitude) {
         coords = [parseFloat(meta.latitude), parseFloat(meta.longitude)];
-      } else if (city && cityCoordinates[city]) {
-        coords = [...cityCoordinates[city]];
+      } else if (city) {
+        const matchedCityKey = Object.keys(cityCoordinates).find(key => city.includes(key) || key.includes(city));
+        if (matchedCityKey) {
+          coords = [...cityCoordinates[matchedCityKey]];
+        } else if (country && countryCoordinates[country]) {
+          coords = [...countryCoordinates[country]];
+        }
       } else if (country && countryCoordinates[country]) {
         coords = [...countryCoordinates[country]];
       }
