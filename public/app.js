@@ -1,3 +1,12 @@
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log('[PWA] Service Worker registered scope:', reg.scope))
+      .catch(err => console.error('[PWA] Service Worker registration failed:', err));
+  });
+}
+
 // State variables
 let leads = [];
 let logs = [];

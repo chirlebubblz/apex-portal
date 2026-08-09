@@ -1,0 +1,18 @@
+{
+  "name": "Apex CRM & Logistics Portal",
+  "short_name": "Apex Portal",
+  "description": "Premium CRM & Logistics Portal for solar operations.",
+  "start_url": "/index.html?pwa=true",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#ea580c",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "icon-512.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}
