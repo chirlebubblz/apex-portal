@@ -74,3 +74,59 @@ CREATE POLICY "Allow authenticated/service read pipeline_logs"
     FOR SELECT 
     TO authenticated, service_role 
     USING (true);
+
+-- Create the inventory table
+CREATE TABLE IF NOT EXISTS inventory (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    name TEXT NOT NULL,
+    sku TEXT NOT NULL UNIQUE,
+    category TEXT NOT NULL,
+    quantity INTEGER NOT NULL DEFAULT 0,
+    unit_cost NUMERIC NOT NULL DEFAULT 0,
+    currency TEXT NOT NULL DEFAULT 'PHP',
+    specs TEXT DEFAULT '',
+    warehouse_country TEXT NOT NULL DEFAULT 'PH'
+);
+
+-- Enable RLS on inventory
+ALTER TABLE inventory ENABLE ROW LEVEL SECURITY;
+
+-- Create policies for inventory
+CREATE POLICY "Allow public select inventory"
+    ON inventory
+    FOR SELECT
+    TO public
+    USING (true);
+
+CREATE POLICY "Allow authenticated/service insert inventory"
+    ON inventory
+    FOR INSERT
+    TO authenticated, service_role
+    WITH CHECK (true);
+
+CREATE POLICY "Allow authenticated/service update inventory"
+    ON inventory
+    FOR UPDATE
+    TO authenticated, service_role
+    USING (true)
+    WITH CHECK (true);
+
+CREATE POLICY "Allow authenticated/service delete inventory"
+    ON inventory
+    FOR DELETE
+    TO authenticated, service_role
+    USING (true);
+
+-- Seed default inventory items
+INSERT INTO inventory (id, sku, name, category, quantity, unit_cost, currency, specs, warehouse_country)
+VALUES
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'APX-PAN-550M', 'Apex Mono 550W Solar Panel', 'Panels', 120, 8500, 'PHP', 'Monocrystalline, 21.3% Efficiency, IP68 Junction Box', 'PH'),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12', 'APX-PAN-400M', 'Apex Compact 400W Panel', 'Panels', 85, 6200, 'PHP', 'Residential sleek black layout, 120 Half-cells', 'PH'),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a13', 'APX-INV-05HY', 'Apex Hybrid Inverter 5kW', 'Inverters', 15, 48000, 'PHP', 'Single Phase, Dual MPPT, Battery Ready, Wifi module', 'PH'),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a14', 'APX-INV-10HY', 'Apex Hybrid Inverter 10kW', 'Inverters', 8, 72000, 'PHP', 'Three Phase, Triple MPPT, Parallel Stackable', 'CN'),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a15', 'APX-BAT-LFP05', 'Apex LFP Battery Unit 5.12kWh', 'Batteries', 24, 85000, 'PHP', 'LiFePO4, 6000+ Cycles, Wall-mount stackable', 'PH'),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a16', 'APX-BAT-LFP10', 'Apex LFP Battery Unit 10.24kWh', 'Batteries', 0, 148000, 'PHP', 'LiFePO4, high-discharge smart BMS, LCD Display', 'PH'),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a17', 'APX-BAT-LFP10-CN', 'Apex LFP Battery Unit 10.24kWh (CN)', 'Batteries', 15, 130000, 'PHP', 'LiFePO4, high-discharge smart BMS, partner facility', 'CN'),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a18', 'APX-MNT-TIN', 'Apex Tin Roof Mount Kit', 'Mounting', 200, 1800, 'PHP', 'Al6005-T5 Aluminum rails, SUS304 bolts', 'PH')
+ON CONFLICT (sku) DO NOTHING;
