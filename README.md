@@ -1,5 +1,8 @@
 # Apex Climate & Solar: Full-Stack CRM & Logistics Engine
 
+[![Live Demo](https://img.shields.io/badge/Demo-Live%20Application-orange?style=for-the-badge)](https://apex-portal-hq8m.onrender.com)
+[![GitHub Code](https://img.shields.io/badge/Code-GitHub-blue?style=for-the-badge)](https://github.com/chirlebubblz/apex-portal)
+
 An enterprise-grade, mobile-installable (PWA) sandbox application designed to orchestrate the end-to-end sales, e-signature, inventory management, and shipping logistics lifecycle for solar installation operations.
 
 ---

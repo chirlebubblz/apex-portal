@@ -1,5 +1,7 @@
 # Standard Operating Procedure (SOP): Apex CRM & Logistics Portal
 
+**Live Application Link**: [https://apex-portal-hq8m.onrender.com](https://apex-portal-hq8m.onrender.com)
+
 > [!NOTE]
 > **Prototype Status**: This application is a fully functional end-to-end sandbox prototype. External automation engines (n8n) and messaging gateways (Twilio) are simulated within the dashboard to demonstrate the integration architecture without requiring paid API accounts.
 
