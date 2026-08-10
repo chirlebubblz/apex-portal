@@ -83,11 +83,17 @@ flowchart TD
 ```
 
 ### **1. n8n (Automation Hub)**
-* **Why it's needed**: To coordinate cross-platform actions. When a lead is ingested or changes stages, the Express server fires a webhook payload to n8n.
+* **Why it's needed**: To coordinate cross-platform actions. When a lead is ingested or changes stages, the Express server fires a webhook payload containing the lead profile to n8n.
 * **How it fits**: n8n intercepts the webhook and syncs the records to other tools (e.g., Google Sheets, Slack alerts, or Salesforce).
-* **Current Sandbox Status**: The server simulates n8n receivers at `http://127.0.0.1:3000/api/v1/leads/mock-n8n-receiver` to verify payload formatting.
+* **Current Sandbox Status**: By default, the application runs in a self-contained testing mode. The server points `N8N_WEBHOOK_URL` to its own internal endpoint `POST /api/v1/leads/mock-n8n-receiver`. When a lead is added, the server successfully triggers an outbound network request to itself, printing the formatted payload in the logs to verify payload formatting.
+* **Production Setup**: To connect to a live n8n instance:
+  1. Create a workflow in n8n starting with a **Webhook** node set to `POST`.
+  2. Copy the webhook URL (e.g., `https://n8n.yourdomain.com/webhook/abc-123`).
+  3. Define `N8N_WEBHOOK_URL="https://n8n.yourdomain.com/webhook/abc-123"` in your Render Environment Variables or local `.env` file.
+  4. The engine will automatically transition from simulation mode to sending live HTTP posts to your active flow.
 
 ### **2. Twilio (SMS & Messaging Gateway)**
 * **Why it's needed**: To deliver instant customer notifications (autoresponders, scheduling confirmations, shipment tracking updates) directly to mobile phones.
 * **How it fits**: The backend triggers SMS payloads containing tracking numbers and surveyor slots.
 * **Current Sandbox Status**: The app redirects outgoing text messages to a **Simulated Outbox Log** panel, allowing users to verify messaging triggers and copy in-flight texts without configuring credentials.
+
