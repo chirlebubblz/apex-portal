@@ -5,6 +5,7 @@ import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import crypto from 'crypto';
 import { adjustMockStock } from './inventory';
+import { ingestRateLimiter, requireToken } from '../middleware/security';
 
 dotenv.config();
 
@@ -127,7 +128,7 @@ router.post('/mock-n8n-receiver', (req: Request, res: Response) => {
 });
 
 // POST route for lead ingestion
-router.post('/ingest', async (req: Request, res: Response) => {
+router.post('/ingest', ingestRateLimiter, async (req: Request, res: Response) => {
   try {
     console.log('[Ingest] Received incoming payload:', req.body);
 
@@ -316,7 +317,7 @@ router.post('/ingest', async (req: Request, res: Response) => {
 });
 
 // PATCH: General update route for lead information
-router.patch('/:id', async (req: Request, res: Response) => {
+router.patch('/:id', requireToken, async (req: Request, res: Response) => {
   try {
     const leadId = req.params.id;
     const { full_name, phone, email, monthly_bill, service_type, metadata } = req.body;
@@ -396,8 +397,8 @@ router.patch('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// PATCH route to update a lead's pipeline stage
-router.patch('/:id/stage', async (req: Request, res: Response) => {
+// PATCH: Transition pipeline stage of a lead
+router.patch('/:id/stage', requireToken, async (req: Request, res: Response) => {
   try {
     const leadId = req.params.id;
     
@@ -537,7 +538,7 @@ router.patch('/:id/stage', async (req: Request, res: Response) => {
 });
 
 // DELETE: Remove a lead record
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', requireToken, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -575,8 +576,8 @@ router.delete('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// POST: Send supply request to partner in another country (e.g. China)
-router.post('/:id/supply-request', async (req: Request, res: Response) => {
+// POST: Create a supply chain procurement request/fulfillment order
+router.post('/:id/supply-request', requireToken, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { item_sku, partner_country, quantity, item_name } = req.body;
@@ -667,7 +668,7 @@ router.get('/fulfillment/list', (req: Request, res: Response) => {
 });
 
 // PATCH: Update fulfillment order status and trigger notifications
-router.patch('/fulfillment/:orderId', async (req: Request, res: Response) => {
+router.patch('/fulfillment/:orderId', requireToken, async (req: Request, res: Response) => {
   try {
     const { orderId } = req.params;
     const { status, carrier, tracking_number, estimated_delivery } = req.body;
@@ -727,7 +728,7 @@ router.patch('/fulfillment/:orderId', async (req: Request, res: Response) => {
 });
 
 // POST: Simulate customer reply SMS/Email to automate CRM pipeline updates
-router.post('/:id/simulate-reply', async (req: Request, res: Response) => {
+router.post('/:id/simulate-reply', requireToken, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { message, type } = req.body;

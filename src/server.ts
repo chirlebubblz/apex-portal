@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import leadsRouter from './routes/leads';
 import inventoryRouter from './routes/inventory';
 
+import { sanitizeBody } from './middleware/security';
+
 dotenv.config();
 
 const app = express();
@@ -11,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(sanitizeBody);
 
 // Main Ingestion Router mount
 app.use('/api/v1/leads', leadsRouter);

@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
+import { requireToken } from '../middleware/security';
 
 const router = Router();
 
@@ -47,7 +48,7 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 // POST: Add new inventory item
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', requireToken, async (req: Request, res: Response) => {
   try {
     const { name, sku, category, quantity, unit_cost, currency, specs, warehouse_country } = req.body;
 
@@ -90,7 +91,7 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 // PATCH: Update general details, quantity or unit cost of an item
-router.patch('/:id', async (req: Request, res: Response) => {
+router.patch('/:id', requireToken, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { name, sku, category, quantity, unit_cost, currency, specs, warehouse_country } = req.body;
@@ -141,7 +142,7 @@ router.patch('/:id', async (req: Request, res: Response) => {
 });
 
 // DELETE: Delete an inventory item
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', requireToken, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
