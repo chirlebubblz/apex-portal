@@ -18,6 +18,10 @@ This project is a clean-architecture showcase of a full-stack Node.js + Express 
 * **Mobile Ready**: Built as a fully installable **Progressive Web App (PWA)** with a custom service-worker caching system and offline capabilities.
 * **Frontend Visualization**: Leaflet.js interactive maps with custom dark-tiles, digital HTML5 signature canvas drawing pad, and dynamic CSS modals.
 * **Integrations Sandbox**: Simulated webhook receivers verifying payloads for **n8n** automation nodes and **Twilio** SMS messaging triggers.
+* **API Security Shields**: Built-in production-grade security:
+  * **Rate Limiter**: Configures `express-rate-limit` on the public lead ingestion endpoint to prevent database spamming.
+  * **XSS Sanitizer**: Global middleware to recursively strip HTML/Script tags from incoming request bodies.
+  * **Authorization Middleware**: Optional environment-driven token validation (`API_SECRET_TOKEN`) to secure update and delete routes while keeping default sandbox mode open.
 
 ---
 

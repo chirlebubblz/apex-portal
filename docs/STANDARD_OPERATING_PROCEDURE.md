@@ -99,3 +99,25 @@ flowchart TD
 * **How it fits**: The backend triggers SMS payloads containing tracking numbers and surveyor slots.
 * **Current Sandbox Status**: The app redirects outgoing text messages to a **Simulated Outbox Log** panel, allowing users to verify messaging triggers and copy in-flight texts without configuring credentials.
 
+---
+
+## 7. Security & Failsafe Implementations
+
+To protect the application and ensure portfolio-grade defensive practices, three security controls are enforced:
+
+### **1. API Rate Limiting**
+The public lead ingestion endpoint (`POST /api/v1/leads/ingest`) has an active rate limiter:
+* **Constraint**: Maximum of 100 requests per 15 minutes per IP address.
+* **Failsafe Action**: Spammer IPs receive a `429 Too Many Requests` status, protecting the server and Supabase from database-ballooning attacks.
+
+### **2. Global XSS Shield (Input Sanitization)**
+To prevent Cross-Site Scripting (XSS) attacks in the dashboard console:
+* **Action**: Every incoming JSON request body is scanned recursively by Express middleware.
+* **Failsafe Action**: Any HTML/Script tags (e.g. `<script>`, `<iframe>`) are stripped automatically before saving records.
+
+### **3. Environment-Driven API Token Authorization**
+Modifying endpoints (like `PATCH` lead updates, `DELETE` inventory items, and shipping logistics requests) are protected by Bearer Token validation:
+* **Authorization Headers**: Binds `Authorization: Bearer <secret>` or `X-API-KEY`.
+* **Flexible Sandbox Mode**: If `API_SECRET_TOKEN` is not defined in the server's environment variables, the auth check is bypassed automatically.
+* **Production Lock-Down**: Defining `API_SECRET_TOKEN` (on Render or `.env`) instantly blocks unauthorized client-side edits with a `401 Unauthorized` response.
+
